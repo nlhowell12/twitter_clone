@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homepage</title>
+    <style>
+        #tweet {
+            width: 70%;
+            height: 50px;
+        }
+    </style>
+</head>
+{% include 'topbar.html'%}
+<body>
+    {% if tweets %}
+        {% for tweet in tweets %}
+            <div class='tweet'>
+                <p>tweet.user.username tweet.user.handle tweet.user.date</p>
+                <p>tweet.body</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>
+            No tweets available to show.
+        </p>
+    {% endif %}
+</body>
+</html>
