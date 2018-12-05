@@ -1,15 +1,23 @@
 <style>
     header {
         display: flex;
-        width: 500px;
+        width: 100%;
         margin: auto;
+        justify-content: center;
+        border-bottom: 1px solid black;
+    }
+    .buttonWrap {
+        display: flex;
+        width: 500px;
         justify-content: space-between;
     }
 </style>
 
 <header>
-    <button>Home</button>
-    <button>New Tweet</button>
-    <button>Notifications</button>
-    <a href='logout/'><button>Logout</button></a>
+    <div class='buttonWrap'>
+        <a href='/'><button>Home</button></a>
+        <a href='/newtweet/'><button>New Tweet</button></a>
+        <a href='/notifications/'><button>Notifications: {{notification_count}}</button></a>
+        <a href='/logout/'><button>Logout</button></a>
+    </div>
 </header>

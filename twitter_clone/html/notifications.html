@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Notifications</title>
+    <style>
+        .notification {
+            position: relative;
+            display: flex;
+            height: 75px;
+            top: 75px;
+            border: 1px solid black;
+            left: 300px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'topbar.html' %}
+    {% include 'profilecard.html' %}
+    <div>
+    {% for notification in notifications %}
+        <div class='notification'>
+            <p><a href='/profile/{{notification.tweet.user.id}}'>{{notification.tweet.user}}</a> has mentioned you: {{notification}}</p>
+        </div>
+    {% endfor %}
+    </div>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>Write a new tweet</title>
     <style>
         body {
             display: flex;
@@ -14,19 +14,20 @@
             display: flex;
             flex-direction: column;
             width: 300px;
-        }
-        button {
-            width: 300px;
+            align-self: center;
+            position: relative;
+            top: 100px;
         }
 </style>
 </head>
 <body>
+    {% include 'topbar.html' %}
+    {% include 'profilecard.html' %}
     <form action="" method="post">
         {% csrf_token %}
         {{ form }}
         <p></p>
         <input type="submit" value="Submit">
-    <p></p>
-<a href="/signup/">Signup!</a>
+        <p></p>
 </body>
 </html>

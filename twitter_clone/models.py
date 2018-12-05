@@ -25,9 +25,10 @@ class Tweet(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-    body = models.CharField(max_length=500)
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
+    user = models.ForeignKey(TwitterUser, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.body
+        return self.tweet.body
+
