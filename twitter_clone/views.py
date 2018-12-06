@@ -21,12 +21,22 @@ def get_twitter_user(request):
 @login_required
 def home_view(request):
     user = get_twitter_user(request)
-    tweets = Tweet.objects.filter(user=user)
+    tweets = list(Tweet.objects.filter(user=user))
+    user_tweet_count = Tweet.objects.filter(user=user).count
+    for other_user in user.following.all():
+        other_tweets = list(Tweet.objects.filter(user=other_user))
+        tweets = tweets + other_tweets
     notifications = Notification.objects.filter(user=user)
     return render(
         request,
         'home.html',
-        {'user': user, 'tweets': tweets, 'notification_count': len(notifications)}
+        ({
+            'user': user,
+            'tweets': tweets,
+            'notification_count': len(notifications),
+            'user_tweet_count': user_tweet_count,
+            'logged_in': request.user.is_authenticated
+            })
         )
 
 
@@ -101,22 +111,36 @@ def logout_view(request):
 
 def notification_view(request):
     user = get_twitter_user(request)
-    notifications = Notification.objects.filter(
+    db_notifications = Notification.objects.filter(
         user=user
         )
+    notifications = list(db_notifications)
+    user_tweet_count = Tweet.objects.filter(user=user).count
+    for notification in db_notifications:
+        notification.delete()
     return render(
         request,
         'notifications.html',
-        {'user': user, 'notifications': notifications,
-            'notification_count': len(notifications)})
+        {
+            'user': user,
+            'notifications': notifications,
+            'notification_count': len(notifications),
+            'user_tweet_count': user_tweet_count
+            })
 
 
 def profile_view(request, id):
     user = TwitterUser.objects.filter(id=id).first()
-    current_user = TwitterUser.objects.filter(
-        id=request.user.twitteruser.id).first()
+    current_user = {}
+    following = []
+    notifications = []
+    if not request.user.is_anonymous:
+        current_user = TwitterUser.objects.filter(
+            id=request.user.twitteruser.id).first()
+        following = list(current_user.following.all())
+        notifications = Notification.objects.filter(user=current_user)
     tweets = Tweet.objects.filter(user=user)
-    notifications = Notification.objects.filter(user=current_user)
+    user_tweet_count = Tweet.objects.filter(user=user).count
     return render(
         request,
         'profile.html',
@@ -124,6 +148,37 @@ def profile_view(request, id):
             'user': user,
             'tweets': tweets,
             'notification_count': len(notifications),
-            'current_user': current_user
+            'current_user': current_user,
+            'user_tweet_count': user_tweet_count,
+            'following': following,
+            'logged_in': request.user.is_authenticated
         }
     )
+
+
+def follow(request, id):
+    user = TwitterUser.objects.filter(id=id).first()
+    current_user = TwitterUser.objects.filter(
+        id=request.user.twitteruser.id).first()
+    if user in current_user.following.all():
+        current_user.following.remove(user)
+    else:
+        current_user.following.add(user)
+    return HttpResponseRedirect('/profile/{}'.format(id))
+
+
+def tweet_view(request, id):
+    user = get_twitter_user(request) or request.user
+    tweet = Tweet.objects.filter(id=id).first() or {'body': 'There is no tweet with that ID'}
+    notification_count = 0
+    user_tweet_count = 0
+    if not request.user.is_anonymous:
+        notification_count = Notification.objects.filter(user=user).count
+        user_tweet_count = Tweet.objects.filter(user=user).count
+    return render(request, 'tweet.html'.format(id), {
+        'tweet': tweet,
+        'user': user,
+        'notification_count': notification_count,
+        'user_tweet_count': user_tweet_count,
+        'logged_in': request.user.is_authenticated
+    })

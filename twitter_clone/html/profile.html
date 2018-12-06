@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Homepage</title>
+    <title>{{user.username}}</title>
     <style>
         .tweet {
             border: 1px solid gray;
@@ -19,7 +19,9 @@
     </style>
 </head>
 {% include 'topbar.html' %}
-{% include 'profilecard.html' %}
+{% if user.username %}
+    {% include 'profilecard.html' %}
+{% endif %}
 <body>
     <div class='tweetFeed'>
         {% if tweets %}

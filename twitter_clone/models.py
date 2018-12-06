@@ -28,6 +28,7 @@ class Notification(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
     user = models.ForeignKey(TwitterUser, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
+    viewed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.tweet.body

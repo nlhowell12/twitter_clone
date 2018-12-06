@@ -10,6 +10,7 @@
             border: 1px solid gray;
             display: flex;
             flex-direction: column;
+            max-width: 700px;
         }
         .tweetFeed {
             position: relative;
@@ -19,22 +20,15 @@
     </style>
 </head>
 {% include 'topbar.html' %}
-{% include 'profilecard.html' %}
+{% if user.username %}
+    {% include 'profilecard.html' %}
+{% endif %}
 <body>
     <div class='tweetFeed'>
-        {% if tweets %}
-            {% for tweet in tweets %}
-                <div class='tweet'>
-                    <p><a href='/profile/{{tweet.user.id}}'>{{tweet.user.username}}</a> {{tweet.user.handle}} <a href='/tweet/{{tweet.id}}'>{{tweet.date}}</a></p>
-                    <p>{{tweet.body}}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>
-                No tweets available to show.
-            </p>
-        {% endif %}
+        <div class='tweet'>
+            <p><a href='/profile/{{tweet.user.id}}'>{{tweet.user.username}}</a> {{tweet.user.handle}} {{tweet.date}}</p>
+            <p>{{tweet.body}}</p>
+        </div>    
     </div>
-    
 </body>
 </html>

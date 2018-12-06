@@ -16,8 +16,10 @@
 <header>
     <div class='buttonWrap'>
         <a href='/'><button>Home</button></a>
+        {% if logged_in %}
         <a href='/newtweet/'><button>New Tweet</button></a>
         <a href='/notifications/'><button>Notifications: {{notification_count}}</button></a>
         <a href='/logout/'><button>Logout</button></a>
+        {% endif %}
     </div>
 </header>

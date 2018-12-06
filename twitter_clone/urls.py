@@ -20,7 +20,8 @@ from django.urls import re_path
 from twitter_clone.models import TwitterUser, Tweet, Notification
 from twitter_clone.views import (
     home_view, login_view, signup_view,
-    logout_view, new_tweet_view, notification_view, profile_view
+    logout_view, new_tweet_view, notification_view, profile_view, follow,
+    tweet_view
     )
 
 admin.site.register(TwitterUser)
@@ -35,5 +36,7 @@ urlpatterns = [
     path('login/', login_view),
     path('signup/', signup_view),
     path('logout/', logout_view),
-    path('newtweet/', new_tweet_view)
+    path('newtweet/', new_tweet_view),
+    path('follow/<int:id>', follow),
+    path('tweet/<int:id>', tweet_view)
 ]

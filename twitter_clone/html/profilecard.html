@@ -10,19 +10,22 @@
 </style>
 
 <div class='profileCard'>
-    {{user.username}}
+    <a href='/profile/{{user.id}}'>{{user.username}}</a>
     <br>
     {{user.handle}}
     <br>
     Following: {{user.following.count}}
     <br>
-    {% if current_user %}
-    <button>
-        {% if user in current_user.following %}
-        Unfollow
-        {% else %}
-        Follow
-        {% endif %}
-    </button>
+    Tweets: {{user_tweet_count}}
+    {% if current_user != user and current_user %}
+    <a href='/follow/{{user.id}}'>
+        <button>
+            {% if user in following %}
+            Unfollow
+            {% else %}
+            Follow
+            {% endif %}
+        </button>
+    </a>
     {% endif %}
 </div>
