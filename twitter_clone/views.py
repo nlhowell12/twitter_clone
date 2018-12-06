@@ -56,7 +56,7 @@ def new_tweet_view(request):
         tweet = Tweet.objects.create(
             user=TwitterUser.objects.filter(
                 username=request.user.username).first(),
-                body=data['tweet']
+            body=data['tweet']
         )
         if '@' in data['tweet']:
             users = re.findall(r'[@]\w+', data['tweet'])
@@ -169,7 +169,8 @@ def follow(request, id):
 
 def tweet_view(request, id):
     user = get_twitter_user(request) or request.user
-    tweet = Tweet.objects.filter(id=id).first() or {'body': 'There is no tweet with that ID'}
+    tweet = (Tweet.objects.filter(id=id).first() or {
+        'body': 'There is no tweet with that ID'})
     notification_count = 0
     user_tweet_count = 0
     if not request.user.is_anonymous:

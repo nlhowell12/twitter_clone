@@ -3,7 +3,11 @@ from django import forms
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', required=False)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(), required=False)
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(),
+        required=False
+        )
 
 
 class SignupForm(forms.Form):
